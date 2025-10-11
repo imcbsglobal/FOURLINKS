@@ -1,0 +1,247 @@
+:root {
+  --lux-bg: #0a0a0a;
+  --lux-fg: #f7f7f7;
+  --lux-muted: rgba(255, 255, 255, 0.65);
+  --lux-accent: #c7a96b;
+  --lux-border: rgba(255, 255, 255, 0.12);
+  --lux-glass: rgba(255, 255, 255, 0.06);
+  --lux-blur: 12px;
+
+  --font-heading: "Playfair Display", ui-serif, Georgia, serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+}
+
+/* ---------- NAVBAR CONTAINER ---------- */
+
+.luxury-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  color: var(--lux-fg);
+  border-bottom: 1px solid var(--lux-border);
+  background: linear-gradient(180deg, rgba(10,10,10,0.75), rgba(10,10,10,0.35) 60%, rgba(10,10,10,0));
+  -webkit-backdrop-filter: blur(var(--lux-blur));
+  backdrop-filter: blur(var(--lux-blur));
+  transition: height 300ms ease, background 300ms ease;
+}
+
+
+.luxury-navbar--scrolled {
+  height: 90px;
+  background: linear-gradient(180deg, rgba(10,10,10,0.95), rgba(10,10,10,0.85));
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.luxury-navbar__background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 120px at 50% 0%, rgba(199, 169, 107, 0.14), transparent 60%),
+    radial-gradient(600px 80px at 10% 0%, rgba(255, 255, 255, 0.08), transparent 60%),
+    radial-gradient(600px 80px at 90% 0%, rgba(255, 255, 255, 0.08), transparent 60%);
+}
+
+.luxury-navbar__content {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 20px;
+  margin-inline: auto;
+}
+
+.luxury-navbar__wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---------- BRAND ---------- */
+
+.brand-section {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.brand-section__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.1;
+  background: linear-gradient(180deg, #fff, #e9e5dd 40%, #bfa571 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.brand-section--mobile .brand-section__title {
+  font-size: clamp(22px, 5vw, 32px);
+}
+
+/* ---------- MENU BUTTON ---------- */
+
+.menu-button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 30%;
+  border: 1px solid var(--lux-border);
+  background: var(--lux-glass);
+  color: var(--lux-fg);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  cursor: pointer;
+  padding: 6px;
+
+  svg {
+    stroke-width: 2;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+/* ---------- BOTTOM BORDER LINE ---------- */
+
+.luxury-navbar__border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.25) 10%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0.25) 90%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------- OVERLAY MENU ---------- */
+
+.overlay-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  color: var(--lux-fg);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  -webkit-backdrop-filter: blur(calc(var(--lux-blur) + 6px));
+  backdrop-filter: blur(calc(var(--lux-blur) + 6px));
+  animation: overlayFade 180ms ease-out both;
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.overlay-menu__header {
+  position: relative;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--lux-border);
+}
+
+.overlay-menu__items {
+  position: relative;
+  overflow: auto;
+  padding-inline: 20px;
+  padding-top: 28px;
+  padding-bottom: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.overlay-menu__list {
+  width: min(92vw, 680px);
+  display: grid;
+  gap: 14px;
+}
+
+/* ---------- MENU LINKS ---------- */
+
+.menu-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  font-family: var(--font-body);
+  color: var(--lux-fg);
+  font-size: clamp(18px, 2.4vw, 22px);
+  letter-spacing: 0.02em;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: var(--lux-border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+  .luxury-navbar {
+    height: 76px;
+  }
+
+  .menu-button {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 640px) {
+  .luxury-navbar__content {
+    padding-inline: 16px;
+  }
+
+  .brand-section__title {
+    letter-spacing: 0.08em;
+  }
+
+  .overlay-menu__items {
+    padding-inline: 16px;
+  }
+
+  .overlay-menu__list {
+    gap: 12px;
+  }
+
+  .menu-link {
+    font-size: clamp(17px, 4.5vw, 20px);
+    padding: 12px 16px;
+    border-radius: 12px;
+  }
+}
+
+html, body {
+  background-color: var(--lux-bg);
+}

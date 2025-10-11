@@ -1,0 +1,222 @@
+// Variables
+$color-dark-teal: #2D3E2D;
+$color-white: #B8975A;
+$color-gray-light: rgba(255, 255, 255, 0.7);
+$color-amber: #000000;
+$color-hover: rgba(255, 255, 255, 0.9);
+
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 3rem;
+$spacing-2xl: 4rem;
+
+$transition-base: all 0.3s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin hover-effect {
+  transition: $transition-base;
+  
+  &:hover {
+    color: $color-hover;
+    transform: translateY(-2px);
+  }
+}
+
+// Footer Styles
+.footer {
+  background-color: $color-dark-teal;
+  color: $color-white;
+  width: 100%;
+  
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: $spacing-2xl $spacing-lg;
+  }
+  
+  &__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: $spacing-xl;
+    
+    @media (max-width: 968px) {
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-lg;
+    }
+    
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: $spacing-xl;
+    }
+  }
+  
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    max-width: 400px;
+  }
+  
+  &__logo {
+    @include flex-center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xs;
+    
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  
+  &__logo-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  
+  &__description {
+    color: $color-gray-light;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  
+  &__social {
+    @include flex-center;
+    gap: $spacing-sm;
+    margin-top: $spacing-xs;
+  }
+  
+  &__social-link {
+    @include flex-center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: $color-white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: $transition-base;
+    text-decoration: none;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  &__back-to-top {
+    @include flex-center;
+    gap: $spacing-xs;
+    margin-top: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: $transition-base;
+    width: fit-content;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+  
+  &__links-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 $spacing-xs 0;
+    color: $color-white;
+  }
+  
+  &__links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  &__link {
+    color: $color-gray-light;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: $transition-base;
+    display: inline-block;
+    
+    &:hover {
+      color: $color-white;
+      transform: translateX(4px);
+    }
+  }
+  
+  &__copyright {
+    background-color: $color-amber;
+    color: #b8975a;
+    text-align: center;
+    padding: $spacing-md $spacing-lg;
+    
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 968px) {
+  .footer {
+    &__brand {
+      max-width: 100%;
+    }
+    
+    &__content {
+      .footer__links:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    &__container {
+      padding: $spacing-lg $spacing-md;
+    }
+    
+    &__back-to-top {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
