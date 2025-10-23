@@ -1,0 +1,214 @@
+/* src/components/Navbar.scss */
+
+/* Basic reset-ish */
+.luxury-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  transition: background-color 240ms ease, box-shadow 240ms ease;
+  background: transparent;
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+
+  &--scrolled {
+    background-color: rgba(10, 10, 10, 0.45);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 18px rgba(2,2,2,0.2);
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__wrapper {
+    /* Use a three-column grid so we can center the nav while keeping brand left and actions right */
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 78px;
+  }
+
+  &__border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+}
+
+
+.brand-section {
+  justify-self: start;
+
+  &__title {
+    font-family: 'Times New Roman', serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 20px;
+    color: #f7f2e9;
+    text-transform: none;
+  }
+
+  &--mobile {
+    display: none;
+  }
+}
+
+/* Centered nav links (desktop) */
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-self: center; /* centers the list within the grid's middle column */
+  display: none; /* hidden on mobile, shown on desktop via media query */
+  align-items: center;
+  gap: 28px;
+  display: flex;
+
+  &__item {
+  }
+
+  &__link {
+    color: rgba(255,255,255,0.92);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 6px 8px;
+    transition: color 160ms ease, transform 120ms ease;
+    text-transform: none;
+    font-weight: 500;
+
+    &:hover {
+      color: #ffdca8;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* Right actions: menu button, search, locale etc. */
+.right-actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Menu button visible on small screens, hidden on desktop */
+.menu-button {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* Overlay menu for mobile */
+.overlay-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.overlay-menu__inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay-menu__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.overlay-menu__items {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+.menu-link {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  transition: transform 140ms ease, color 140ms ease;
+
+  &:hover {
+    color: #ffdca8;
+    transform: translateX(6px);
+  }
+}
+
+/* Make overlay close button style consistent */
+.overlay-close {
+  background: transparent;
+  border: none;
+}
+
+/* RESPONSIVE breakpoints */
+@media (min-width: 900px) {
+  /* On wider screens: show nav links and hide the menu button */
+  .nav-links {
+    display: flex;
+  }
+  .menu-button {
+    display: none;
+  }
+
+  /* hide mobile brand (we use the same brand on desktop) */
+  .brand-section--mobile {
+    display: none;
+  }
+
+  .brand-section__title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 899px) {
+  /* On smaller screens: hide the center nav */
+  .nav-links {
+    display: none;
+  }
+
+  .brand-section--mobile {
+    display: block;
+  }
+
+  .brand-section__title {
+    font-size: 18px;
+  }
+}
