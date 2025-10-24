@@ -1,11 +1,12 @@
+// ===================================================================
 // src/components/Navbar.jsx
+// ===================================================================
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import './Navbar.scss';
 
-// IMPORTANT: this path is from src/components → src/assets
-// Make sure a file exists at: src/assets/menu-bg.jpg
-// (You can rename your own file to menu-bg.jpg or change the filename below)
+// Import your logo
+import logo from '../assets/LOGOFOURLINKS.png';
 import menuBg from '../assets/gallery1.jpg';
 
 export default function LuxuryNavbar() {
@@ -29,14 +30,20 @@ export default function LuxuryNavbar() {
   return (
     <>
       <nav className={`luxury-navbar${isScrolled ? ' luxury-navbar--scrolled' : ''}`}>
-        <div className="luxury-navbar__background"></div>
-
         <div className="luxury-navbar__content">
           <div className="luxury-navbar__wrapper">
 
-            {/* Brand Section - Left */}
+            {/* Brand Section - Left with Logo */}
             <div className="brand-section">
-              <div className="brand-section__title">FOUR LINKS</div>
+              <a href="/" className="brand-section__logo-link">
+                <div className="brand-section__logo-container">
+                  <img 
+                    src={logo} 
+                    alt="Four Links Logo" 
+                    className="brand-section__logo"
+                  />
+                </div>
+              </a>
             </div>
 
             {/* Desktop Nav Links - Center */}
@@ -44,7 +51,8 @@ export default function LuxuryNavbar() {
               {navLinks.map((link) => (
                 <li key={link.href} className="nav-links__item">
                   <a href={link.href} className="nav-links__link">
-                    {link.label}
+                    <span className="nav-links__link-text">{link.label}</span>
+                    <span className="nav-links__link-underline"></span>
                   </a>
                 </li>
               ))}
@@ -57,7 +65,7 @@ export default function LuxuryNavbar() {
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Toggle menu"
               >
-                {isOpen ? <X size={32} /> : <Menu size={32} />}
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
           </div>
@@ -71,27 +79,31 @@ export default function LuxuryNavbar() {
         <div
           className="overlay-menu"
           style={{
-            backgroundImage: `linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.9)), url(${menuBg})`,
+            backgroundImage: `linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.95)), url(${menuBg})`,
           }}
         >
           <div className="overlay-menu__header">
-            <div className="luxury-navbar__background"></div>
-            <div className="luxury-navbar__content">
-              <div className="luxury-navbar__wrapper">
-                <div className="brand-section brand-section--mobile">
-                  <div className="brand-section__title">Vafa Acres</div>
+            <div className="brand-section brand-section--mobile">
+              <a href="/" className="brand-section__logo-link">
+                <div className="brand-section__logo-container">
+                  <img 
+                    src={logo} 
+                    alt="Four Links Logo" 
+                    className="brand-section__logo"
+                  />
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
           <div className="overlay-menu__items">
             <div className="overlay-menu__list">
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <a 
                   key={link.href}
                   href={link.href} 
-                  className="menu-link" 
+                  className="menu-link"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}

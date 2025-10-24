@@ -448,43 +448,30 @@ export default function About() {
         <div className="what-we-do__container">
           <div className="what-we-do__header">
             <h2 className="what-we-do__subtitle">WHAT WE DO</h2>
-            <div className="what-we-do__underline"></div>
             <h1 className="what-we-do__title">
-              Turning ideas into reality with precision and purpose.
+              Where Expertise Meets Impact
             </h1>
+            <p className="what-we-do__description">
+              From construction to renovation, our expertise spans vital sectors—driving innovation, 
+              delivering results, and building what matters most to communities across the region.
+            </p>
           </div>
 
-          <div className="what-we-do__tabs">
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className={`what-we-do__tab ${
-                  activeTab === index ? "active" : ""
-                }`}
-                onClick={() => setActiveTab(index)}
-              >
-                {service.title}
+          <div className="what-we-do__grid">
+            {services.map((service) => (
+              <div key={service.id} className="what-we-do__card">
+                <div className="what-we-do__card-image">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                  />
+                  <div className="what-we-do__card-overlay">
+                    <h3 className="what-we-do__card-title">{service.title}</h3>
+                    <div className="what-we-do__card-arrow"></div>
+                  </div>
+                </div>
               </div>
             ))}
-          </div>
-
-          <div className="what-we-do__tab-content">
-            <div className="what-we-do__content-left">
-              <img
-                src={services[activeTab].image}
-                alt={services[activeTab].title}
-                className="what-we-do__image"
-              />
-            </div>
-
-            <div className="what-we-do__content-right">
-              <h3 className="what-we-do__heading">
-                {services[activeTab].heading}
-              </h3>
-              <p className="what-we-do__description">
-                {services[activeTab].description}
-              </p>
-            </div>
           </div>
         </div>
       </section>

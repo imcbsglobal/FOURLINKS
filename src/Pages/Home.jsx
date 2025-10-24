@@ -172,11 +172,7 @@ function AnimatedNumber({ value, suffix = "", duration = 1200, format = (n) => n
 
 // ---------------------- Banner headings + timing ----------------------
 // Edit these to change the rotating headings and sweep speed
-const bannerHeadings = [
-  "Exploring Trends in Semiconductor Manufacturing",
-  "Smart Manufacturing",
-  "Water Infrastructure"
-];
+
 
 const LINE_DURATION_MS = 3600; // sweep duration in milliseconds
 
@@ -188,10 +184,75 @@ export default function Home() {
   // --- HERO BANNER STATE ---
 const [heroIndex, setHeroIndex] = useState(0);
 const heroHeadings = [
-  "Powering\nTransportation\nAcross the\nNorthwest",
-  "Building\nInfrastructure\nfor the\nFuture",
-  "Transforming\nCommunities\nThrough\nEngineering"
+  "Building\nDreams That\nStand Tall",
+  "Renovating\nSpaces,\nReinventing Lives",
+  "Shaping the\nFuture with\nSteel and Glass",
+  "Powering\nProgress with\nPrecision Engineering",
+  "Constructing\nWarehouses That\nDrive Industries",
+  "Maintaining\nExcellence,\nEvery Single Day"
 ];
+
+// <-- ADD THIS: small/label headings used by the tabs & sweep (must exist before tab refs) -->
+const bannerHeadings = [
+  "Building Construction",
+  "Villa Renovation",
+  "Aluminium and Glass Works",
+  "MEP Works",
+  "Warehouse Construction",
+  "General Maintenance"
+];
+
+// ----------------------- TABS: refs + underline measurement -----------------------
+const tabsRef = useRef(null);
+const tabButtonRefs = useRef([]);
+
+// keep tabButtonRefs length in-sync with bannerHeadings
+tabButtonRefs.current = bannerHeadings.map((_, i) => tabButtonRefs.current[i] ?? React.createRef());
+
+useEffect(() => {
+  let rafId = null;
+  const elTabs = tabsRef.current;
+  if (!elTabs) return;
+
+  const updateUnderline = () => {
+    const activeBtn = tabButtonRefs.current[heroIndex]?.current;
+    if (!activeBtn) {
+      elTabs.classList.remove('tabs--js-controlled');
+      elTabs.style.removeProperty('--underline-left');
+      elTabs.style.removeProperty('--underline-width');
+      return;
+    }
+
+    const tabsRect = elTabs.getBoundingClientRect();
+    const btnRect = activeBtn.getBoundingClientRect();
+
+    const leftPx = Math.round(btnRect.left - tabsRect.left + elTabs.scrollLeft);
+    const widthPx = Math.round(btnRect.width);
+
+    rafId = window.requestAnimationFrame(() => {
+      elTabs.style.setProperty('--underline-left', `${leftPx}px`);
+      elTabs.style.setProperty('--underline-width', `${widthPx}px`);
+      elTabs.classList.add('tabs--js-controlled');
+    });
+  };
+
+  // initial measurement
+  updateUnderline();
+
+  const onWin = () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(updateUnderline);
+  };
+
+  window.addEventListener('resize', onWin);
+  window.addEventListener('orientationchange', onWin);
+
+  return () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    window.removeEventListener('resize', onWin);
+    window.removeEventListener('orientationchange', onWin);
+  };
+}, [heroIndex, bannerHeadings.length]);
 
 // Auto-rotate (remove if you only want manual clicks)
 useEffect(() => {
@@ -214,65 +275,71 @@ useEffect(() => {
 
   // --- WHAT WE DO section state & data ---
   const [activeTab, setActiveTab] = useState(0);
-
-  const services = [
-    {
-      id: 0,
-      title: "Building Construction",
-      image: gallery1,
-      heading: "Building Construction",
-      description:
-        "We deal with all fields of building construction, metal & steel works like preparation of drawings, getting approvals from authorities, supervision, and execution of projects. Our team is motivated, experienced, and committed — professionals who prove their worth in various projects with appreciation from respected clients."
-    },
-    {
-      id: 1,
-      title: "Villa Renovation",
-      image: gallery2,
-      heading: "Villa Renovation",
-      description:
-        "Four Links is a top villa renovation company offering exceptional and coherent interior renovation solutions and villa modification services. We are committed to providing an international class of renovation & modification services, upgrading the value of your property according to your preferences. We plan, research, design, sketch, and discuss every detail before execution."
-    },
-    {
-      id: 2,
-      title: "Fitout / Interior Works",
-      images: [gallery1, gallery2], 
-      heading: "Fitout / Interior Works",
-      description:
-        "Interior design is a multifaceted profession that includes conceptual development, space planning, site inspections, programming, research, and communication with stakeholders — from construction management to project execution, ensuring harmony between aesthetics and functionality."
-    },
-    {
-      id: 3,
-      title: "Aluminium and Glass Works",
-      image: gallery4,
-      heading: "Aluminium and Glass Works",
-      description:
-        "Aluminium and Glass play an important role in the construction of modern buildings and villas. We apply innovation to enhance appearance and utilize natural energy efficiently. Our expertise covers windows, external walls, and internal partitions, using high-quality reinforced, toughened, and laminated glass."
-    },
-    {
-      id: 4,
-      title: "MEP Works",
-      image: gallery5,
-      heading: "MEP Works",
-      description:
-        "As professionals, we provide the highest quality MEP contractual services in the market. Four Links operates MEP services for both large and small projects in building construction and industrial applications, backed by a team of highly experienced and qualified professionals."
-    },
-    {
-      id: 5,
-      title: "Warehouse Construction",
-      image: gallery6,
-      heading: "Warehouse Construction",
-      description:
-        "Four Links delivers turnkey warehouse construction solutions — from design to build — equipped with the latest technologies and experienced resources. We handle mezzanines, office partitions, fabrication works, industrial racks, and HVAC systems with precision engineering and approvals."
-    },
-    {
-      id: 6,
-      title: "General Maintenance",
-      image: gallery7,
-      heading: "General Maintenance",
-      description:
-        "Four Links offers reliable building maintenance services across the UAE, delivering quality services, excellent customer care, and competitive prices. We evaluate maintenance needs, identify and resolve issues, and provide inspection reports to ensure smooth facility operation for all our clients."
-    }
-  ];
+const services = [
+  {
+    id: 0,
+    title: "Building Construction",
+    images: [
+      { src: gallery1, label: "Commercial Buildings" },
+      { src: gallery2, label: "Residential Projects" },
+      { src: gallery3, label: "Industrial Facilities" }
+    ]
+  },
+  {
+    id: 1,
+    title: "Villa Renovation",
+    images: [
+      { src: gallery2, label: "Modern Villas" },
+      { src: gallery4, label: "Classic Restoration" },
+      { src: gallery5, label: "Luxury Upgrades" }
+    ]
+  },
+  {
+    id: 2,
+    title: "Fitout / Interior Works",
+    images: [
+      { src: gallery1, label: "Office Interiors" },
+      { src: gallery3, label: "Retail Spaces" },
+      { src: gallery6, label: "Hospitality Design" }
+    ]
+  },
+  {
+    id: 3,
+    title: "Aluminium and Glass Works",
+    images: [
+      { src: gallery4, label: "Curtain Walls" },
+      { src: gallery1, label: "Window Systems" },
+      { src: gallery7, label: "Glass Partitions" }
+    ]
+  },
+  {
+    id: 4,
+    title: "MEP Works",
+    images: [
+      { src: gallery5, label: "Electrical Systems" },
+      { src: gallery2, label: "Plumbing Solutions" },
+      { src: gallery3, label: "HVAC Installation" }
+    ]
+  },
+  {
+    id: 5,
+    title: "Warehouse Construction",
+    images: [
+      { src: gallery6, label: "Storage Facilities" },
+      { src: gallery4, label: "Distribution Centers" },
+      { src: gallery1, label: "Industrial Warehouses" }
+    ]
+  },
+  {
+    id: 6,
+    title: "General Maintenance",
+    images: [
+      { src: gallery7, label: "Building Maintenance" },
+      { src: gallery5, label: "Facility Management" },
+      { src: gallery2, label: "Repair Services" }
+    ]
+  }
+];
 
 
   const scrollToContent = () => {
@@ -385,29 +452,37 @@ useEffect(() => {
   const [lineTick, setLineTick] = useState(0); // used to retrigger sweep animation
 
   useEffect(() => {
-    let mounted = true;
+  let mounted = true;
+  let cancelled = false;
 
-    const cycle = async () => {
-      while (mounted) {
-        // retrigger sweep by changing key (remount sweep element)
-        setLineTick(t => t + 1);
+  const cycle = async () => {
+    while (!cancelled && mounted) {
+      // retrigger sweep animation
+      setLineTick(t => t + 1);
 
-        // Wait for half the duration, then update heading so it changes as the line passes
-        await new Promise(r => setTimeout(r, Math.floor(LINE_DURATION_MS / 2)));
+      // wait half the line duration, then switch the headings while the sweep passes
+      await new Promise((resolve) => setTimeout(resolve, Math.floor(LINE_DURATION_MS / 2)));
+      if (!mounted || cancelled) break;
 
-        setCurrentBannerIndex(prev => (prev + 1) % bannerHeadings.length);
+      // advance both the small banner index and the hero (big heading) index so they stay synced
+      setCurrentBannerIndex((prev) => {
+        const next = (prev + 1) % bannerHeadings.length;
+        setHeroIndex(next); // keep hero in sync with the sweep
+        return next;
+      });
 
-        // wait the remaining half
-        await new Promise(r => setTimeout(r, Math.ceil(LINE_DURATION_MS / 2)));
-      }
-    };
+      // wait remaining half before next cycle
+      await new Promise((resolve) => setTimeout(resolve, Math.ceil(LINE_DURATION_MS / 2)));
+    }
+  };
 
-    cycle();
+  cycle();
 
-    return () => {
-      mounted = false;
-    };
-  }, []); // run once on mount
+  return () => {
+    mounted = false;
+    cancelled = true;
+  };
+}, [bannerHeadings.length]); // rerun only if number of headings changes
 
   return (
     <>
@@ -430,35 +505,67 @@ useEffect(() => {
 
   <div className="video-banner__inner">
     <div className="video-banner__left">
-      {/* Dynamic Main Headings */}
-      <h1 className="video-banner__heading" aria-live="polite" style={{ '--hero-index': heroIndex }}>
-        {heroHeadings.map((h, idx) => (
-          <span
-            key={idx}
-            className={`video-banner__heading-line ${idx === heroIndex ? 'is-active' : ''}`}
-          >
-            {h.split('\n').map((line, i) => (
-              <span key={i} className="video-banner__heading-line-part">{line}</span>
-            ))}
-          </span>
+ {/* Dynamic Main Headings */}
+<div className="video-banner__heading-wrapper">
+  {/* top yellow line (remounts when lineTick changes so animation replay) */}
+  <div key={lineTick} className="video-banner__heading-line-top" />
+
+  {/* small label under the line */}
+  <div className="video-banner__small-label" aria-hidden="false">
+    {bannerHeadings[currentBannerIndex]}
+  </div>
+
+  <h1
+    className="video-banner__heading"
+    aria-live="polite"
+    style={{ '--hero-index': heroIndex }}
+  >
+    {heroHeadings.map((h, idx) => (
+      <span
+        key={idx}
+        className={`video-banner__heading-line ${idx === heroIndex ? 'is-active' : ''}`}
+      >
+        {h.split('\n').map((line, i) => (
+          <span key={i} className="video-banner__heading-line-part">{line}</span>
         ))}
-      </h1>
+      </span>
+    ))}
+  </h1>
+</div>
+
+
 
       {/* Small labels + underline */}
-      <div className="video-banner__tabs" role="tablist" aria-label="Hero sections">
-        {["On the Move", "Water Infrastructure", "Smart Manufacturing"].map((label, i) => (
-          <button
-            key={i}
-            role="tab"
-            aria-selected={heroIndex === i}
-            className={`video-banner__tab ${heroIndex === i ? 'active' : ''}`}
-            onClick={() => setHeroIndex(i)}
-          >
-            {label}
-          </button>
-        ))}
-        <div className="video-banner__underline" />
-      </div>
+     {/* Small labels + underline */}
+<div
+
+  className="video-banner__tabs"
+  role="tablist"
+  aria-label="Hero sections"
+  ref={tabsRef}
+>
+  {/* TOP YELLOW LINE */}
+  <div className="video-banner__overline" />
+
+  {/* TAB BUTTONS */}
+  {bannerHeadings.map((label, i) => (
+    <button
+      key={i}
+      role="tab"
+      aria-selected={heroIndex === i}
+      ref={tabButtonRefs.current[i]}
+      className={`video-banner__tab ${heroIndex === i ? 'active' : ''}`}
+      onClick={() => setHeroIndex(i)}
+    >
+      {label}
+    </button>
+  ))}
+
+  {/* BOTTOM YELLOW LINE */}
+  <div className="video-banner__underline" />
+</div>
+
+
     </div>
 
     {/* Play / Pause button */}
@@ -635,8 +742,7 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* 🌟 WHAT WE DO SECTION */}
-<section className="what-we-do" id="what-we-do">
+     <section className="what-we-do home-what-we-do" id="what-we-do">
   <div className="what-we-do__container">
     <div className="what-we-do__header">
       <h2 className="what-we-do__subtitle">WHAT WE DO</h2>
@@ -646,56 +752,39 @@ useEffect(() => {
       </h1>
     </div>
 
-    <div className="what-we-do__tabs">
+    {/* Tabs */}
+    <div className="what-we-do__tabs" role="tablist" aria-label="Services">
       {services.map((service, index) => (
-        <div
+        <button
           key={service.id}
+          type="button"
+          role="tab"
+          aria-pressed={activeTab === index}
           className={`what-we-do__tab ${activeTab === index ? "active" : ""}`}
           onClick={() => setActiveTab(index)}
         >
           {service.title}
-        </div>
+        </button>
       ))}
     </div>
 
-    <div className="what-we-do__tab-content">
-      <div className="what-we-do__content-left">
-        {/* ✅ Polaroid Collage for multiple images */}
-        {services[activeTab].images && services[activeTab].images.length > 0 ? (
-          <div className="what-we-do__polaroid-collage">
-            {services[activeTab].images.map((img, i) => (
-              <div key={i} className={`what-we-do__polaroid what-we-do__polaroid--${i + 1}`}>
-                <div className="what-we-do__polaroid-frame">
-                  <img
-                    src={img}
-                    alt={`${services[activeTab].title} ${i + 1}`}
-                    className="what-we-do__polaroid-image"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
+    {/* Content: Clean grid of image cards like screenshot */}
+    <div className="what-we-do__tab-content" key={activeTab}>
+      {services[activeTab].images.map((item, i) => (
+        <div key={i} className="what-we-do__image-card">
           <img
-            src={services[activeTab].image}
-            alt={services[activeTab].title}
-            className="what-we-do__image what-we-do__image--single"
+            src={item.src}
+            alt={item.label}
+            className="what-we-do__card-image"
           />
-        )}
-      </div>
-
-      <div className="what-we-do__content-right">
-        <h3 className="what-we-do__heading">
-          {services[activeTab].heading}
-        </h3>
-        <p className="what-we-do__description">
-          {services[activeTab].description}
-        </p>
-      </div>
+          <div className="what-we-do__card-overlay">
+            <h3 className="what-we-do__card-title">{item.label}</h3>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>
-
 
       {/* =====================
           TESTIMONIALS SECTION
